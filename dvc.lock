@@ -1,0 +1,41 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python src/process_data.py --config=params.yaml
+    deps:
+    - path: data_given/mnist_test.csv
+      md5: f7aa04a4b094c016b7882d12986e1323
+      size: 18293649
+    - path: src/get_data.py
+      md5: ca9d3633b2e71e70e3318ef2c5636279
+      size: 611
+    - path: src/process_data.py
+      md5: e56993a27e7d1c2b3955b069116cbbfa
+      size: 1773
+    outs:
+    - path: data/processed/
+      md5: f4ed5ca99062d9221e94913627a754d2.dir
+      size: 569883
+      nfiles: 2115
+  train_and_evaluate:
+    cmd: python src/train.py --config=params.yaml
+    deps:
+    - path: data/processed/
+      md5: f4ed5ca99062d9221e94913627a754d2.dir
+      size: 569883
+      nfiles: 2115
+    - path: src/train.py
+      md5: d0cc96ceb66297f428c57df66d399988
+      size: 2684
+    params:
+      params.yaml:
+        estimators.epochs: 1
+    outs:
+    - path: report/scores.json
+      md5: 29db6bb927aafaf70e37837c41e42213
+      size: 103
+      isexec: true
+    - path: saved_models/new_model.h5
+      md5: 24ff09756a64c36604e7471de341abc4
+      size: 416892144
+      isexec: true

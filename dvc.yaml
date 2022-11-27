@@ -1,0 +1,22 @@
+stages:
+  load_data:
+    cmd: python src/process_data.py --config=params.yaml
+    deps:
+    - src/get_data.py
+    - src/process_data.py
+    - data_given/mnist_test.csv
+    outs:
+    - data/processed/
+
+  train_and_evaluate:
+    cmd: python src/train.py --config=params.yaml
+    deps:
+    - data/processed/
+    - src/train.py
+    params:
+    - estimators.epochs
+    metrics:
+    - report/scores.json:
+        cache: false
+    outs:
+    - saved_models/new_model.h5

@@ -1,0 +1,24 @@
+base:
+  project: mnist-mlops
+  random_state: 42
+
+
+data_source:
+  s3_source: data_given/mnist_test.csv
+  processed: data/processed
+  monitored: data/monitored
+
+load_data:
+
+
+split_data:
+  test_size: 0.2
+
+
+estimators:
+  epochs: 1
+
+model_dir: saved_models
+
+reports:
+  scores: report/scores.json
